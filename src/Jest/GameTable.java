@@ -117,7 +117,7 @@ public class GameTable {
      
  	public void recycle() {
 		for(Player player: playerlist) {
-			Stack.add(player.getOffer().poll());//*maybe an error 
+			Stack.add(player.offer.poll());//*maybe an error 
 		}
 	}
  	// default is that every player has taken a card from the offers

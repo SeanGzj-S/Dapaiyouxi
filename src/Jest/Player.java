@@ -4,28 +4,19 @@ import java.util.*;
 
 public class Player {
 	private LinkedList<Card> jest;
-	private LinkedList<Card> offer; //your offers to other players
+	protected LinkedList<Card> offer; //your offers to other players
 	private int number;
 	
-	public Player(int number) {
-		this.number = number;
+	public Player() {
+		LinkedList<Card> jest = new LinkedList<Card>();
+		LinkedList<Card> offer = new LinkedList<Card>();
 	}
 	
-	public int getNumber() {
-		return this.number;
-	}
-	
-	public void setNumber(int number) {
-		this.number = number;
-	}
-	
+
 	public LinkedList<Card> getJest(){
 		return this.jest;
 	}
 	
-	public LinkedList<Card> getOffer(){
-		return this.offer;
-	}
 	
 	public void addToJest(Card card){
 		this.jest.add(card);
@@ -65,38 +56,7 @@ public class Player {
 		}
 	}
 	
-	//make one of the offers faced-up
-	public void makeOffer(Card card) {
-		if (this.offer.contains(card)) {
-			card.faceup();
-		} else {
-			System.out.println("You don't have this card in your offer, please choose again.\n");
-		}
-	}
-	
-	//choose a player and take a card (1=the faced-up one, 0=the faced-down one)
-	public void takeOffer(Player player, int upOrDown) {
-		if (!offerIsComplete()) {
-			System.out.println("The offer is incomplete, please choose another one.");
-		} else {
-			if (upOrDown == 1) {
-				for (Card card : player.offer) {
-					if (card.showface() == true) {
-						card.facedown();
-						this.addToJest(card);
-						player.offer.remove(card);
-					}
-				}
-			} else if (upOrDown == 0) {
-				for (Card card : player.offer) {
-					if (card.showface() == false) {
-						this.addToJest(card);
-						player.offer.remove(card);
-					}
-				}
-			}
-		}
-	}
-	
+
+
 
 }
