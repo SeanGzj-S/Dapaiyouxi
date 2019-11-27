@@ -87,13 +87,22 @@ public class GameTable {
 		 } 
      }
      
+     
+     public LinkedList<Player> fullofferPlayers(){
+     	LinkedList<Player> list = new LinkedList<Player>();
+     	for(int i = 0; i<playerlist.size();i++) {
+     		if(playerlist.get(i).offerIsComplete()) {
+     			list.add(playerlist.get(i));
+     		}	
+     	}
+    	 
+    	 return list;
+     }
+     
+     
+     
     public Player decideOrder() {
-    	LinkedList<Player> list = new LinkedList<Player>();
-    	for(int i = 0; i<playerlist.size();i++) {
-    		if(playerlist.get(i).offerIsComplete()) {
-    			list.add(playerlist.get(i));
-    		}	
-    	}
+    	LinkedList<Player> list = this.fullofferPlayers();
     	int index =0;
     	for(int j =1; j < list.size();j++) {
     		if (list.get(index).getfaceupOffer().isJoker()) {

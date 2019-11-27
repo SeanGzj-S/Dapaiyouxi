@@ -88,7 +88,15 @@ public class SuitCard extends Card {
 		}
 	}
 	
-	
+	public String toString(){
+		StringBuffer bf = new StringBuffer();
+		bf.append("[");
+		bf.append(this.suit);
+		bf.append(" ");
+		bf.append(this.value);
+		bf.append("] ");
+		return bf.toString();
+	}
 	
 	
 	

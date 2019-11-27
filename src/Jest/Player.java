@@ -17,6 +17,9 @@ public class Player {
 		return this.jest;
 	}
 	
+	public LinkedList<Card> getOffer(){
+		return this.offer;
+	}
 	
 	public void addToJest(Card card){
 		this.jest.add(card);
@@ -45,7 +48,7 @@ public class Player {
 	
 	public void checkJest() {
 		for (Card c : this.jest) {
-			System.out.println(c);
+			System.out.println(c.toString());
 		}
 	}
 	
