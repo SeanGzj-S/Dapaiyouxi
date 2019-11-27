@@ -5,14 +5,23 @@ import java.util.*;
 public class Player {
 	private LinkedList<Card> jest;
 	protected LinkedList<Card> offer; //your offers to other players
-	private int number;
+    private int score;
+	
 	
 	public Player() {
 		LinkedList<Card> jest = new LinkedList<Card>();
 		LinkedList<Card> offer = new LinkedList<Card>();
+		score=0;
 	}
 	
+	public void setscore(int s) {
+		this.score=s;
+	}
 
+	public int getscore() {
+		return this.score;
+	}
+	
 	public LinkedList<Card> getJest(){
 		return this.jest;
 	}
@@ -55,7 +64,7 @@ public class Player {
 	//check the two cards dealt to you
 	public void checkOffer() {
 		for (Card c : this.offer) {
-			System.out.println(c);
+			System.out.println(c.toString());
 		}
 	}
 	
