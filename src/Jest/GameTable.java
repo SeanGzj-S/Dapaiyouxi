@@ -55,16 +55,22 @@ public class GameTable implements Accepter{
      public void setup() {
     	 if(Trophy.isEmpty()) {
     		Collections.shuffle(Drawdeck);
-    		while(Trophy.size()<3) {
+    		if (playerlist.size()==3) {
+        		while(Trophy.size()<2) {
+        			Trophy.add(Drawdeck.poll());
+        			cardnumber-=1;
+        		}
+			}
+    		else if (playerlist.size()==4) {
     			Trophy.add(Drawdeck.poll());
-    		}
-    		
+    			cardnumber-=1;
+			}
     	 }
      }
      
      public void distribute() {
     	 if (Stack.isEmpty()) {
-    		 for(int i=0;i<2*playerlist.size();i++) {
+    		 for(int i=0;i<playerlist.size();i++) {
     	 			Stack.add(Drawdeck.poll());
     	 			Stack.add(Drawdeck.poll());
     	 			cardnumber -= 2;	
@@ -126,7 +132,12 @@ public class GameTable implements Accepter{
      
  	public void recycle() {
 		for(Player player: playerlist) {
-			Stack.add(player.offer.poll());//*maybe an error 
+			for (Card c : player.offer) {
+				if (c.showface()) {
+					c.facedown();
+				}
+			} 
+			Stack.add(player.offer.poll());
 		}
 	}
  	
@@ -138,19 +149,20 @@ public class GameTable implements Accepter{
  	
  	
  	public Player matchchar(String charateristics) {
+ 		Player rp =new Player(); 	
  		
  		if(charateristics == "Joker") {
  			for (Player player : playerlist) {
  				for(Card card : player.getJest()) {
  					if (card instanceof Joker) {
-						return player;
+ 						rp = player;
 					}
  				}	
  			}
  		}
  		
  		else if (charateristics=="Best Jest") {
- 			return this.decidewinner(playerlist);
+ 			rp =  this.decidewinner(playerlist);
 		}
  		
  		else if (charateristics=="Lowest Club") {
@@ -177,7 +189,7 @@ public class GameTable implements Accepter{
 					}	
 				}
 			}
-			return playerlist.get(indexp);
+			rp =  playerlist.get(indexp);
 		}
  		
  		else if (charateristics=="Lowest Spade") {
@@ -205,7 +217,7 @@ public class GameTable implements Accepter{
 					
 				}
 			}
-			return playerlist.get(indexp);
+			rp =  playerlist.get(indexp);
 		}
  		
  		else if (charateristics=="Best Jest,No Joke") {
@@ -221,7 +233,7 @@ public class GameTable implements Accepter{
 					playerlisttocal.add(player);
 				}
 			}
-			return this.decidewinner(playerlisttocal);
+			rp =  this.decidewinner(playerlisttocal);
 		}
  		
  		else if (charateristics=="Highest Club") {
@@ -249,7 +261,7 @@ public class GameTable implements Accepter{
 					
 				}
 			}
-			return playerlist.get(indexp);
+			rp =  playerlist.get(indexp);
 		}
  		
  		else if (charateristics=="Highest Spade") {
@@ -277,7 +289,7 @@ public class GameTable implements Accepter{
 					
 				}
 			}
-			return playerlist.get(indexp);
+			rp =  playerlist.get(indexp);
 		}
  		
  		else if (charateristics=="Majority four") {
@@ -306,7 +318,7 @@ public class GameTable implements Accepter{
 					return playerlist.get(mark);
 				}
 			}
-			return playerlist.get(index);
+			rp =  playerlist.get(index);
 		}
  		
  		else if (charateristics=="Majority three") {
@@ -335,7 +347,7 @@ public class GameTable implements Accepter{
 					return playerlist.get(mark);
 				}
 			}
-			return playerlist.get(index);
+			rp =  playerlist.get(index);
 		}
  		
  		else if (charateristics=="Majority two") {
@@ -364,7 +376,7 @@ public class GameTable implements Accepter{
 					return playerlist.get(mark);
 				}
 			}
-			return playerlist.get(index);
+			rp =  playerlist.get(index);
 		}
  		
  		else if (charateristics=="Lowest Heart") {
@@ -391,7 +403,7 @@ public class GameTable implements Accepter{
 					}	
 				}
 			}
-			return playerlist.get(indexp);
+			rp =  playerlist.get(indexp);
 		}
  		
  		else if (charateristics=="Highest Diamond") {
@@ -419,7 +431,7 @@ public class GameTable implements Accepter{
 					
 				}
 			}
-			return playerlist.get(indexp);
+			rp =  playerlist.get(indexp);
 		}
 		
  		
@@ -446,7 +458,7 @@ public class GameTable implements Accepter{
 					}
 				}
 			}
-			return playerlist.get(indexp);
+			rp =  playerlist.get(indexp);
  		 }
 		
  		
@@ -473,9 +485,10 @@ public class GameTable implements Accepter{
 					}
 				}
 			}
-			return playerlist.get(indexp);
+			rp =  playerlist.get(indexp);
 		}
- 		return null;
+ 		return rp;// why can't I delete this sentence?
+ 		
  	}
  	
  	
@@ -483,7 +496,7 @@ public class GameTable implements Accepter{
  	public void assignTrophy() {
  		for (Card c : Trophy) {
  			matchchar(c.getChar()).addToJest(c);
- 		};
+ 		}
  	}
  	
  	public Player decidewinner(LinkedList<Player> playerlisttocal) {
@@ -500,4 +513,224 @@ public class GameTable implements Accepter{
  	}
  	
  	// default is that every player has taken a card from the offers
+ 	
+ 	
+ 	public static void main(String[] args) {
+ 		GameTable gameTable = getinstance();
+ 		Scanner scan = new Scanner(System.in);
+       
+        int i = 0;   // number of human players
+        String j;   // type of virtual player
+        int m = 0;   // the number of a virtual player
+        System.out.print("How many players are you：");
+        
+       
+        while(scan.hasNextLine()&&(i<1||i>4)) {
+            if (scan.hasNextInt()) {
+
+                i = scan.nextInt();
+                // 接收整数
+                if (i<5&i>0) {
+                	 System.out.println("You have decided " + i+" players");
+    			}
+                else {
+                	System.out.println("You must decide the number of players in the range of 1 to 4! Try again!");
+                }
+            } 
+        }
+
+
+        
+        while(gameTable.playerlist.size()!=i) {
+        	
+        	System.out.println("Please write your name:");
+
+        	String name = scan.next();
+        	gameTable.playerlist.add(new HumanPlayer(name));
+        }
+
+
+        
+        
+          if (i<4) {
+              System.out.println("Please chose a number as the type of virtual player:1 Easy,2 Normal,3 Tough");
+        	  while(scan.hasNextLine()&&gameTable.playerlist.size()<3) {
+              	
+
+
+                  	j=scan.nextLine();     
+
+
+                      if (j.contentEquals("1")) {
+                    	  m++;
+                      	gameTable.playerlist.add(new VirtualPlayer(m, new Easy()));
+                      	System.out.println("An easy player is created");
+                      	
+                      	if (gameTable.playerlist.size()<3) {
+							System.out.println("another one");
+						}
+                      }
+                      else if (j.contentEquals("2")) {
+                    	  m++;
+                      	gameTable.playerlist.add(new VirtualPlayer(m, new Normal()));
+                      	System.out.println("A normal player is created ");
+                      	
+                      	if (gameTable.playerlist.size()<3) {
+							System.out.println("another one");
+						}
+      				}
+                      else if (j.contentEquals("3")) {
+                    	  m++;
+                      	gameTable.playerlist.add(new VirtualPlayer(m, new Tough()));
+                      	
+                      	if (gameTable.playerlist.size()<3) {
+							System.out.println("another one");
+						}
+      				}
+                  
+                      
+              
+       	}
+		}
+        
+       
+
+
+        for (Player player : gameTable.playerlist) {
+    		if(player instanceof HumanPlayer) {
+    			HumanPlayer hm = (HumanPlayer) player;
+    			System.out.println(hm.getname());
+    		}
+    		else {
+    			VirtualPlayer vt = (VirtualPlayer) player;
+
+    			System.out.println(vt.getnumber());
+    		}
+		}
+        gameTable.setup();
+        while (gameTable.hascard() == true) {
+
+        	gameTable.distribute();
+        	gameTable.dealcards();
+        	
+        	
+        	for(int hp =0;hp<i;hp++) {
+        		gameTable.playerlist.get(hp).checkOffer();
+        		System.out.println(" ");
+        	}
+        	
+      
+        	
+        	 for(Player p: gameTable.playerlist) {
+
+            		if (p instanceof HumanPlayer) {
+            			HumanPlayer human = (HumanPlayer) p;
+            			boolean offermade = false;
+            			while (!offermade) {
+    					System.out.println("make ur offer decide the first or the second to face up(choose by number 1 or 2)");
+    					
+        					human.makeOffer(human.getOffer().get(scan.nextInt()-1));
+        					offermade=true;
+						}
+            		}
+            		else if(p instanceof VirtualPlayer) {
+						VirtualPlayer robot = (VirtualPlayer) p;
+						robot.StrategyOffer();
+					}		
+            	}		//make all the offers		
+			
+           for(int np = 0 ; np<3;np++) {
+        	   for(int nc = 1; nc<3;nc++) {
+        		   if(gameTable.playerlist.get(np).getOffer().get(nc-1).showface()) {
+        			   System.out.print("player "+np+"("+gameTable.playerlist.get(np).toString()+")"+" has a faceup card : ");
+        			   System.out.println(gameTable.playerlist.get(np).getOffer().get(nc-1).toString()+" which is the number " + nc + " in his/her offer ");
+        		   }
+        	   }
+        	   System.out.println(gameTable.playerlist.get(np).getOffer().size());
+           }
+        	//show all the face up card and related info
+
+
+           Player playerdecided = null;
+	
+           while(gameTable.fullofferPlayers().size()!=0) {
+               
+        	   if (playerdecided==null||playerdecided.hastakencard) {
+            	   playerdecided = gameTable.decideOrder();
+			}
+        	   
+       		if (playerdecided instanceof HumanPlayer) {
+        			HumanPlayer human = (HumanPlayer) playerdecided;
+
+   					    System.out.println("take card,please choose by the code of player and the card(0 for facedown, 1 for faceup):");
+   					    int tnp =scan.nextInt();
+   					    if (tnp<gameTable.playerlist.size()) {
+   	   					    playerdecided = gameTable.playerlist.get(tnp);
+                            System.out.println(playerdecided.toString());
+						}
+    					human.takeOffer(playerdecided,scan.nextInt()-1);
+	
+
+        		}
+       		
+        		else if(playerdecided instanceof VirtualPlayer) {
+   					VirtualPlayer robot = (VirtualPlayer) playerdecided;
+   					LinkedList<Player> offeredPlayers = gameTable.fullofferPlayers();
+   					playerdecided=robot.StrategyTake(offeredPlayers);
+   				}
+           
+           
+           }
+           //take offer one by one
+           
+         	 if (gameTable.hascard()) {
+				gameTable.recycle();
+			}
+        	
+		}
+        
+        //n-1 rounds
+        for(Player p:gameTable.playerlist) {
+        	
+        	p.addToJest(p.getOffer().poll());
+        }
+        // take card from their own offer
+        
+        ScoreCalculator scoreCalculator = new ScoreCalculator();
+        
+        gameTable.accept(scoreCalculator);
+        
+        gameTable.assignTrophy();
+        
+        gameTable.accept(scoreCalculator);
+        
+        
+        for(Player p:gameTable.playerlist) {
+        	System.out.print(p.toString());
+        	System.out.println(" has a set of jest as below: ");
+        	for (Card c : p.getJest()) {
+				System.out.println(c.toString());
+			}
+        	
+        	System.out.println(p.getscore());
+        }
+        
+        
+        
+        System.out.println("winner is:" );
+        
+        System.out.println(gameTable.decidewinner(gameTable.playerlist).toString());
+        
+        
+        
+        
+ }
 }
+
+
+
+
+
+// problem left: player.tostring
+//exceptions
+

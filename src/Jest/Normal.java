@@ -9,13 +9,16 @@ public class Normal implements Level{
 		vp.getOffer().get(randomoffer).faceup();		
 	}
 	
-	public void StrategyTake(LinkedList<Player> offeredPlayers,VirtualPlayer vp) {
+	public Player StrategyTake(LinkedList<Player> offeredPlayers,VirtualPlayer vp) {
 		int randomoffer = (int)(Math.random()*2);
 		int randomplayer = (int)(Math.random()*offeredPlayers.size());
 		
 
 			vp.addToJest(offeredPlayers.get(randomplayer).offer.get(randomoffer));
 			offeredPlayers.get(randomplayer).offer.remove(randomoffer);
+	
+			return offeredPlayers.get(randomplayer);
+	
 	}
 
 	

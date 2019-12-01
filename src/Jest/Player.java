@@ -6,12 +6,13 @@ public class Player {
 	private LinkedList<Card> jest;
 	protected LinkedList<Card> offer; //your offers to other players
     private int score;
-	
+	protected boolean hastakencard;
 	
 	public Player() {
-		LinkedList<Card> jest = new LinkedList<Card>();
-		LinkedList<Card> offer = new LinkedList<Card>();
+		jest = new LinkedList<Card>();
+		offer = new LinkedList<Card>();
 		score=0;
+		hastakencard = false;
 	}
 	
 	public void setscore(int s) {
@@ -69,6 +70,24 @@ public class Player {
 	}
 	
 
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
 
+		
+		if(this instanceof HumanPlayer) {
+			HumanPlayer hm = (HumanPlayer) this;
+			sb.append(hm.toString());
+		}
+		else {
+			VirtualPlayer vt = (VirtualPlayer) this;
+
+			sb.append(vt.toString());
+		}
+		
+		sb.append(" scores: ");
+		sb.append(this.score);
+		
+		return sb.toString();
+	}
 
 }

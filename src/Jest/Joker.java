@@ -14,6 +14,8 @@ public class Joker extends Card{
     public boolean isJoker() {
    	return true; 
     }
+    
+    
 
 	
 }

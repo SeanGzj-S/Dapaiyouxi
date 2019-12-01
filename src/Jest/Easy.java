@@ -22,28 +22,35 @@ public class Easy implements Level{
 			
 	}
 	
-	public void StrategyTake(LinkedList<Player> offeredPlayers,VirtualPlayer vp) {
+	public Player StrategyTake(LinkedList<Player> offeredPlayers,VirtualPlayer vp) {
 				
+		Player nextPlayer = null;
 		Card theSmallestOne = offeredPlayers.get(0).getfaceupOffer();
 		if (theSmallestOne instanceof Joker) {
-			vp.addToJest(theSmallestOne);
-			offeredPlayers.get(0).offer.remove(theSmallestOne);
+			nextPlayer = offeredPlayers.get(0);
 		} else {
 			SuitCard theSmallestOne1 = (SuitCard) theSmallestOne;
 			for(Player player : offeredPlayers) {
 				if (player.getfaceupOffer() instanceof Joker) {
 					theSmallestOne = player.getfaceupOffer();
+					nextPlayer = player;
 				} else {
 					SuitCard compareOne = (SuitCard) player.getfaceupOffer();
 					if (compareOne.compare(theSmallestOne1) == false) {
 						theSmallestOne = player.getfaceupOffer();
+						nextPlayer = player;
 					}	
 				}
-				vp.addToJest(theSmallestOne);
-				player.offer.remove(theSmallestOne);
+
 				}
 			}
-		}
+		
+		vp.addToJest(theSmallestOne);
+		nextPlayer.offer.remove(theSmallestOne);
+	
+	
+		return nextPlayer;
+	}
 	
 	
 	

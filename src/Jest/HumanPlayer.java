@@ -29,6 +29,8 @@ public class HumanPlayer extends Player {
 		} else {
 			System.out.println("You don't have this card in your offer, please choose again.\n");
 		}
+		
+		this.hastakencard=false;
 	}
 	
 	
@@ -36,9 +38,7 @@ public class HumanPlayer extends Player {
 	
 	//choose a player and take a card (1=the faced-up one, 0=the faced-down one)
 	public void takeOffer(Player player, int upOrDown) {
-		if (!offerIsComplete()) {
-			System.out.println("The offer is incomplete, please choose another one.");
-		} else {
+		if (player.offerIsComplete()) {
 			if (upOrDown == 1) {
 				for (Card card : player.offer) {
 					if (card.showface() == true) {
@@ -55,7 +55,21 @@ public class HumanPlayer extends Player {
 					}
 				}
 			}
+			
+			System.out.println("offer is taken.");
+			
+		} else {
+			System.out.println("The offer is incomplete, please choose another one.");
 		}
+		this.hastakencard = true;
+	}
+	
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("Human player ");
+		sb.append(this.getname());
+	
+		return sb.toString();
 	}
 	
 }

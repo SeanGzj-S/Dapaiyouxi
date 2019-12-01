@@ -22,8 +22,11 @@ public class Tough implements Level{
 			
 	}
 	
-	public void StrategyTake(LinkedList<Player> offeredPlayers,VirtualPlayer vp) {
+	public Player StrategyTake(LinkedList<Player> offeredPlayers,VirtualPlayer vp) {
+		Player nextPlayer = null;
+		
 		Card theBiggestOne = offeredPlayers.get(0).getfaceupOffer();
+		nextPlayer= offeredPlayers.get(0);
 		if (theBiggestOne instanceof Joker) {
 			theBiggestOne = offeredPlayers.get(1).getfaceupOffer();
 		}
@@ -38,5 +41,7 @@ public class Tough implements Level{
 			vp.addToJest(theBiggestOne);
 			player.offer.remove(theBiggestOne);
 		}
-	}
+	
+	return nextPlayer;
+	}///???
 }

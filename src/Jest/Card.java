@@ -28,7 +28,11 @@ public abstract class Card {
      }
 
      public boolean isJoker() {
-    	return false; 
+    	 boolean isjoker=false;
+    	 if (this instanceof Joker) {
+			isjoker=true;
+		}
+    	return isjoker; 
      }
   
      public static void main(String[] args) {
@@ -39,7 +43,15 @@ public abstract class Card {
      }
      
      public String toString() {
-    	 return null;
+
+    	 String string;
+     if(this instanceof SuitCard) {
+      SuitCard sc =(SuitCard) this;
+      string=sc.toString();
      }
-     
+     else {
+		string="Joker";
+	}
+     return string;
+     }
 }
