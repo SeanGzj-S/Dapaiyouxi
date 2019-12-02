@@ -76,12 +76,14 @@ public class Player {
 		
 		if(this instanceof HumanPlayer) {
 			HumanPlayer hm = (HumanPlayer) this;
-			sb.append(hm.toString());
+			sb.append("Human player ");
+			sb.append(hm.getname());
 		}
 		else {
 			VirtualPlayer vt = (VirtualPlayer) this;
 
-			sb.append(vt.toString());
+			sb.append("Virtual player ");
+			sb.append(vt.getnumber());
 		}
 		
 		sb.append(" scores: ");
@@ -90,4 +92,13 @@ public class Player {
 		return sb.toString();
 	}
 
+	public static void main(String[] args) {
+		HumanPlayer hm = new HumanPlayer("亚历山大");
+		Player player = (Player) hm;
+		
+		System.out.println(player.toString());
+		
+		
+	}
+	
 }

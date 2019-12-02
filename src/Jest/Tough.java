@@ -22,26 +22,30 @@ public class Tough implements Level{
 			
 	}
 	
+	/*
+	 * In the tough level, for all the available offers, the virtual player compare one by one the faced up one.
+	 * It will take the best one.
+	 */
 	public Player StrategyTake(LinkedList<Player> offeredPlayers,VirtualPlayer vp) {
 		Player nextPlayer = null;
-		
-		Card theBiggestOne = offeredPlayers.get(0).getfaceupOffer();
-		nextPlayer= offeredPlayers.get(0);
-		if (theBiggestOne instanceof Joker) {
-			theBiggestOne = offeredPlayers.get(1).getfaceupOffer();
-		}
+		Card theBestOne = offeredPlayers.get(0).getfaceupOffer();
 		for (Player player : offeredPlayers) {
-			SuitCard theBiggestOne1 = (SuitCard) theBiggestOne;
-			if (!(player.getfaceupOffer() instanceof Joker)) {
-				SuitCard compareOne = (SuitCard) player.getfaceupOffer();
-				if (compareOne.compare(theBiggestOne1) == true) {
-					theBiggestOne = player.getfaceupOffer();
-				}	
+			Card comparedOne = player.getfaceupOffer();
+			if (theBestOne.compareCard(comparedOne) == false) {
+				theBestOne = player.getfaceupOffer();
+				nextPlayer = player;
 			}
-			vp.addToJest(theBiggestOne);
-			player.offer.remove(theBiggestOne);
 		}
-	
-	return nextPlayer;
-	}///???
+		vp.addToJest(theBestOne);
+		for (Player player : offeredPlayers) {
+			if (player.getOffer().contains(theBestOne)){
+				player.offer.remove(theBestOne);
+				nextPlayer = player;
+				System.out.println("The virtual player " + vp.getnumber() + " has taken an offer of " + player);
+			}
+		}
+		vp.hastakencard = true;
+		return nextPlayer;
+		
+	}
 }

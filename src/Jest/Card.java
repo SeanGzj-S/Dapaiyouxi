@@ -35,13 +35,48 @@ public abstract class Card {
     	return isjoker; 
      }
   
-     public static void main(String[] args) {
-    	 Joker joker=new Joker();
-    	 joker.setChar();
-    	 joker.getChar();
-
-     }
      
+     
+     /* 
+      * For STRATEGY design pattern
+      * To make the jest biggest, we first tend to choose Spade, then Club, then Joker, then Heart, finally Diamonds
+      * If the suits of two cards are the same, we tend to choose the one of the bigger value
+      * If "this" card is the better choice, return true; else return false
+      */
+     public boolean compareCard(Card card) {
+    	 if (this instanceof Joker) {
+    		 SuitCard card2 = (SuitCard)card;
+    		 if (card2.getSuit() == Suit.Spade || card2.getSuit() == Suit.Club) {
+    			 return false;
+    		 } else {return true;}
+    	 }
+    	 else if (card instanceof Joker) {
+    		 SuitCard card2 = (SuitCard)this;
+    		 if (card2.getSuit() == Suit.Spade || card2.getSuit() == Suit.Club) {
+    			 return true;
+    		 } else {return false;}
+    	 }
+    	 else {
+    		 SuitCard card1 = (SuitCard)this;
+    		 SuitCard card2 = (SuitCard)card;
+    		 if (card1.getSuit() == card2.getSuit()) {
+    			 return card1.compare(card2);
+    		 }
+    		 else if (card1.getSuit() == Suit.Spade) {return true;}
+    		 else if (card1.getSuit() == Suit.Club) {
+    			 if (card2.getSuit() == Suit.Spade) {return false;}
+    			 else {return true;}
+    		 }
+    		 else if (card1.getSuit() == Suit.Heart) {
+    			 if (card2.getSuit() == Suit.Spade || card2.getSuit() == Suit.Club) {return false;}
+    			 else {return true;}
+    		 }
+    		 else {return false;}
+    		 }
+     }
+    	 
+    	 
+    	 
      public String toString() {
 
     	 String string;

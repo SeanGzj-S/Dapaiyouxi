@@ -22,36 +22,34 @@ public class Easy implements Level{
 			
 	}
 	
-	public Player StrategyTake(LinkedList<Player> offeredPlayers,VirtualPlayer vp) {
-				
-		Player nextPlayer = null;
-		Card theSmallestOne = offeredPlayers.get(0).getfaceupOffer();
-		if (theSmallestOne instanceof Joker) {
-			nextPlayer = offeredPlayers.get(0);
-		} else {
-			SuitCard theSmallestOne1 = (SuitCard) theSmallestOne;
-			for(Player player : offeredPlayers) {
-				if (player.getfaceupOffer() instanceof Joker) {
-					theSmallestOne = player.getfaceupOffer();
-					nextPlayer = player;
-				} else {
-					SuitCard compareOne = (SuitCard) player.getfaceupOffer();
-					if (compareOne.compare(theSmallestOne1) == false) {
-						theSmallestOne = player.getfaceupOffer();
-						nextPlayer = player;
-					}	
-				}
 
+				
+		/*
+		 * In the easy level, for all the available offers, the virtual player compare one by one the faced up one.
+		 * It will take the worst one.
+		 */
+		public Player StrategyTake(LinkedList<Player> offeredPlayers,VirtualPlayer vp) {
+			Player nextPlayer = null;
+			Card theWorstOne = offeredPlayers.get(0).getfaceupOffer();
+			for (Player player : offeredPlayers) {
+				Card comparedOne = player.getfaceupOffer();
+				if (theWorstOne.compareCard(comparedOne) == true) {
+					theWorstOne = player.getfaceupOffer();
 				}
 			}
+			vp.addToJest(theWorstOne);
+			for (Player player : offeredPlayers) {
+				if (player.getOffer().contains(theWorstOne)){
+					player.offer.remove(theWorstOne);
+					nextPlayer = player;
+					
+				}
+			}
+			vp.hastakencard = true;
+			System.out.println("The virtual player " + vp.getnumber() + "has taken an offer of " + nextPlayer);
+			return nextPlayer;
 		
-		vp.addToJest(theSmallestOne);
-		nextPlayer.offer.remove(theSmallestOne);
-	
-	
-		return nextPlayer;
-	}
-	
+		}
 	
 	
 	

@@ -37,7 +37,10 @@ private int number;
 		
 		this.hastakencard = true;
 		
+		System.out.println("!!!!VIRTUAL TAKE!!!!!");
+		
 		return this.level.StrategyTake(offeredPlayers,this);
+		
 		
 
 	}

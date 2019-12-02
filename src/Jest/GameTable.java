@@ -639,7 +639,7 @@ public class GameTable implements Accepter{
 					}		
             	}		//make all the offers		
 			
-           for(int np = 0 ; np<3;np++) {
+           for(int np = 0 ; np<gameTable.playerlist.size();np++) {
         	   for(int nc = 1; nc<3;nc++) {
         		   if(gameTable.playerlist.get(np).getOffer().get(nc-1).showface()) {
         			   System.out.print("player "+np+"("+gameTable.playerlist.get(np).toString()+")"+" has a faceup card : ");
@@ -665,11 +665,15 @@ public class GameTable implements Accepter{
    					    System.out.println("take card,please choose by the code of player and the card(0 for facedown, 1 for faceup):");
    					    int tnp =scan.nextInt();
    					    if (tnp<gameTable.playerlist.size()) {
-   	   					    playerdecided = gameTable.playerlist.get(tnp);
-                            System.out.println(playerdecided.toString());
+   	   					 
+                            System.out.println(gameTable.playerlist.get(tnp).toString());
+           					human.takeOffer(gameTable.playerlist.get(tnp),scan.nextInt());
 						}
-    					human.takeOffer(playerdecided,scan.nextInt()-1);
+ 
 	
+   					    if(human.hastakencard) {
+   					    	playerdecided=gameTable.playerlist.get(tnp);
+   					    }
 
         		}
        		
