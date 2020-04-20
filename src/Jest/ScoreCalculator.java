@@ -1,9 +1,13 @@
 package Jest;
 
 import java.util.LinkedList;
-
+/**
+ * The class {@code ScoreCalculator} is part of the design pattern Visitor and it implements the interface {@code Visitor}
+ */
 public class ScoreCalculator implements Visitor{
-
+	/**
+	 * For all the players in the game(in the player list),calculate their scores according to their Jest.
+	 */
 	public void calculatescores(LinkedList<Player> playerlist) {
 		
 		for(Player p :playerlist ){
